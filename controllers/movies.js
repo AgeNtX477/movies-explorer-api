@@ -11,7 +11,7 @@ module.exports.getMovies = (req, res, next) => {
       if (!movie) {
         throw new NotFoundErr('Фильмы не найдены');
       }
-      return res.status(200).send({ data: movie });
+      return res.status(200).send(movie);
     })
     .catch(next);
 };
@@ -35,7 +35,7 @@ module.exports.postMovie = (req, res, next) => {
     movieId,
     owner: req.user._id,
   })
-    .then((newMovie) => res.send({ data: newMovie }))
+    .then((newMovie) => res.send(newMovie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestErr('Переданы некорректные данные при создании фильма');
@@ -56,7 +56,7 @@ module.exports.deleteMovie = (req, res, next) => {
       if (movie.owner.toString() !== owner) {
         throw new ForbiddenErr('Вы можете удалять только свои фильмы');
       } else {
-        return movie.remove().then(() => res.status(200).send({ data: movie }));
+        return movie.remove().then(() => res.status(200).send(movie));
       }
     })
     .catch(next);
